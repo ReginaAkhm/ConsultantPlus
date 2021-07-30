@@ -18,7 +18,7 @@ import requests
 import json
 import time
 
-print('111')
+print('11')
 
 def check_EGRUL(query):
     '''Краткие сведени из ЕГРЮЛ'''
