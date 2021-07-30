@@ -26,14 +26,6 @@ def checkIP():
     print(soup.find('body').text)
 
 
-# def getFilename_fromCd(cd):
-#     if not cd:
-#         return None
-#     fname = re.findall('filename=(.+)', cd)
-#     if len(fname) == 0:
-#         return None
-#     return fname[0]
-
 def check_EGRUL(query):
     '''REGINA'''
     data = {
@@ -623,7 +615,7 @@ def EGRUL(query):
 
 if __name__ == '__main__':
     pass
-    EGRUL(7743698620)
+    check_EGRUL('7743698620')
     # PB_addr('Адыгея Респ,,Майкоп г,,Краснооктябрьская ул,21,,')
     # PB_neskolko_UL('221100996554')
     # PB_diskvalif('БАГДАСАРЯН ВЛАДИМИР ГРИГОРЬЕВИЧ')
