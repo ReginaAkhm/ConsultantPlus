@@ -19,15 +19,9 @@ import json
 import time
 
 
-def checkIP():
-    '''REGINA'''
-    ip = requests.get('http://checkip.dyndns.org').content
-    soup = BeautifulSoup(ip, 'html.parser')
-    print(soup.find('body').text)
-
 
 def check_EGRUL(query):
-    '''REGINA'''
+    '''Краткие сведени из ЕГРЮЛ'''
     data = {
         "vyp3CaptchaToken": "",
         "page": "",
@@ -40,23 +34,21 @@ def check_EGRUL(query):
     url = "https://egrul.nalog.ru/search-result/" + t + "?r=1625573233361&_=1625573233361"
     result = requests.get(url).text
     json_res = json.loads(result)
-    # t = json_res.get("rows")[0].get("t")
     url = f'https://egrul.nalog.ru/vyp-download/{t}'
-    # print(url)
-    return json_res
     # print(json.dumps(json_res, ensure_ascii=False, indent=4))
-    # return json.dumps(json_res, ensure_ascii=False,indent = 4)
+    return json_res
+
 
 
 def check_IP(guery, date):
-    '''REGINA'''
+    '''Является ли ИП плательщиком налога на профессиональный доход'''
     data = {
         "__EVENTTARGET": "",
         "__EVENTARGUMENT": "",
         "__VIEWSTATE": "RFI7klTiv4Jw6nVOeT+E4PN3HYCyprj7CRA4rAbEplXnsYX80vehjoFFOMKNLI+d78VRMQ==",
         "__VIEWSTATEGENERATOR": "112E02C5",
-        "ctl00$ctl00$tbINN": guery,  # 143400305674
-        "ctl00$ctl00$tbDate": date,  # 2021-07-04
+        "ctl00$ctl00$tbINN": guery,
+        "ctl00$ctl00$tbDate": date,
         "ctl00$ctl00$btSend": "Найти"
     }
 
@@ -68,7 +60,7 @@ def check_IP(guery, date):
 
 
 def fedresurs(inn):
-    '''REGINA'''
+    '''Сведения с сайта Федресурс'''
     url = "https://fedresurs.ru/"
     options = Options()
     options.add_argument("--start-maximized")
@@ -101,9 +93,7 @@ def fedresurs(inn):
     driver.get(href)
     time.sleep(0.5)
     find_deals = BeautifulSoup(driver.page_source, "html.parser").find(class_='info')
-    # pprint(find_deals)
 
-    # print(find_deals)
     contacts = []
     '''сайты и почта'''
     for li in find_deals.findAll("li"):
@@ -162,11 +152,10 @@ def fedresurs(inn):
         pass
     driver.close()
     return contacts, dir_inn, bankrupt, predes, successors
-    # time.sleep(200)7706148097
 
 
 def kadarbitr_1(inn):
-    '''REGINA'''
+    '''Сведения с сайта Кadarbitr'''
     socks.set_default_proxy(socks.SOCKS5, "localhost", 9150)
     socket.socket = socks.socksocket
     checkIP()
@@ -201,11 +190,7 @@ def kadarbitr_1(inn):
 
         response = requests.request("POST", url, headers=headers, data=payload)
         res = response.text
-        # print(res)
         soup = BeautifulSoup(res, 'html.parser')
-        # print(soup)
-
-        # soup = BeautifulSoup('<input id="documentsTotalCount" type="hidden" value="13695"/>')
 
         cnt = soup.find('input', {'id': 'documentsTotalCount'})['value']
         if i == -1:
@@ -230,7 +215,7 @@ def kadarbitr_1(inn):
 
 
 def PB_addr(addr):
-    '''REGINA'''
+    '''Проверка на массовость адреса'''
     data = {
         "page": "1",
         "pageSize": "10",
@@ -286,7 +271,7 @@ def PB_addr(addr):
 
 
 def PB_neskolko_UL(inn):
-    '''REGINA'''
+    '''Проверка учредителя/руководителя на участие в нескольких ЮЛ'''
     data = {
         "page": "1",
         "pageSize": "10",
@@ -352,7 +337,7 @@ def PB_neskolko_UL(inn):
 
 
 def PB_diskvalif(fio):
-    '''REGINA'''
+    '''Проверка учредителя/руководителя на наличие в реестре дисквалифицированных лиц'''
     data = {
         "page": "1",
         "pageSize": "10",
@@ -412,7 +397,7 @@ def PB_diskvalif(fio):
 
 
 def PB_ip(inn):
-    '''REGINA'''
+    '''Сведения об ИП'''
     data = {
         "page": "1",
         "pageSize": "10",
@@ -460,8 +445,6 @@ def PB_ip(inn):
     url = "https://pb.nalog.ru/search-proc.json"
     result = session.post(url, data=data).text
     json_res = json.loads(result)
-    # print(json.dumps(json_res, ensure_ascii=False,indent = 4))
-    # print("======================================================")
     try:
         token = json_res['ip']['data'][0]['token']
         url = "https://pb.nalog.ru/company-proc.json"
@@ -490,7 +473,7 @@ def PB_ip(inn):
 
 
 def PB_ul(inn):
-    '''REGINA'''
+    '''Сведения об ЮЛ'''
     socks.set_default_proxy(socks.SOCKS5, "localhost", 9150)
     socket.socket = socks.socksocket
     checkIP()
@@ -541,9 +524,6 @@ def PB_ul(inn):
     url = "https://pb.nalog.ru/search-proc.json"
     result = requests.post(url, data=data).text
     json_res = json.loads(result)
-    # print(json.dumps(json_res, ensure_ascii=False,indent = 4))
-    # print("======================================================")
-    # print(json_res)
     try:
         token = json_res['ul']['data'][0]['token']
         url = "https://pb.nalog.ru/company-proc.json"
@@ -566,14 +546,12 @@ def PB_ul(inn):
         result = requests.post(url, data=data).text
         json_res = json.loads(result)
         return json_res
-        # return json.dumps(json_res, ensure_ascii=False, indent=4)
     except Exception as e:
         print("не найдено")
         print(e)
 
 
 def getFilename_fromCd(cd):
-    '''REGINA'''
     if not cd:
         return None
     fname = re.findall('filename=(.+)', cd)
@@ -581,18 +559,10 @@ def getFilename_fromCd(cd):
         return None
     return fname[0]
 
-
-def getFilename_fromCd(cd):
-    if not cd:
-        return None
-    fname = re.findall('filename=(.+)', cd)
-    if len(fname) == 0:
-        return None
-    return fname[0]
 
 
 def EGRUL(query):
-    '''REGINA'''
+    '''Скачивание выписки из ЕГРЮЛ'''
     data = {
         "vyp3CaptchaToken": "",
         "page": "",
@@ -622,28 +592,4 @@ if __name__ == '__main__':
     # PB_ip('026413007072')
     # pprint(PB_ul('7452001154'))
     # kadabitr_1("7728168971")
-    # if __name__ == '__main__':
-    #     print(kadarbitr_1("7728168971"))
-    #
-    # a = fedresurs("7743698620")
-    # pprint(a)
-# inn = a[1]
-
-# pprint(PB_diskvalif("910226990921"))
-# pprint(PB_neskolko_UL("910226990921"))
-# pprint(check_IP(inn, "2021-07-04"))
-
-#     #print(kadarbitr_1("7728168971"))
-# pprint(PROZR_B("7713398595"))
-#     # socks.set_default_proxy(socks.SOCKS5, "localhost", 9150)
-#     # socket.socket = socks.socksocket
-#     # print(kadarbitr_1("7728168971"))
-#     # a = PROZR_B("7713398595")
-#     # print("------------------")
-#     # b = prozr(a).get("vyp").get("СумКап")
-#     # b = prozr(a)
-#     # pprint(b)
-#     #time.sleep(1)
-#     # deyat = a.get("ul").get("data")[0].get("okved2name")
-# pprint(check_EGRUL("7713398595"))
-#     # print(kadarbitr("7728168971"))
+    # fedresurs("7743698620")
