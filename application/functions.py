@@ -2,7 +2,7 @@ import json
 import re
 import time
 from pprint import pprint
-
+from config import Config
 from selenium.webdriver.firefox.options import Options
 from selenium import webdriver
 
@@ -17,8 +17,6 @@ from requests import session
 import requests
 import json
 import time
-
-print('11')
 
 def check_EGRUL(query):
     '''Краткие сведени из ЕГРЮЛ'''
@@ -68,7 +66,7 @@ def fedresurs(inn):
     options.add_argument("--disable-gpu")
     options.add_argument("--headless")
     driver = webdriver.Firefox(
-        executable_path="/home/nakoibes/Рабочий стол/geckodriver",
+        executable_path=Config.firefox_path,
         options=options)
     driver.get(url)
     time.sleep(0.5)
