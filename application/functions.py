@@ -474,7 +474,6 @@ def PB_ul(inn):
     '''Сведения об ЮЛ'''
     socks.set_default_proxy(socks.SOCKS5, "localhost", 9150)
     socket.socket = socks.socksocket
-    checkIP()
     data = {
         "page": "1",
         "pageSize": "10",
