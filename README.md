@@ -1,7 +1,7 @@
 # ConsultantPlus
 
 * Клонируем проект
-* Поднимаем MongoDM в докере
+* Поднимаем MongoDB в докере
 ```bash
 sudo docker-compose up -d
 ```
