@@ -1,0 +1,63 @@
+{% extends 'bootstrap/base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+{% block title %}
+{% if title %}{{ title }}{% endif %}
+{% endblock %}
+{% block styles %}
+{{super()}}
+<link rel="stylesheet"
+      href="{{url_for('.static', filename='mystyle.css')}}">
+{% endblock %}
+{% block content %}
+<!--<div class="none_flex_header">-->
+<!--    <img src="{{url_for('images',path='house.jpeg')}}" width="80" height="80" alt="">-->
+<!--</div>-->
+<div class="header">
+    <span class="header_name">
+        {% if data.name%}
+        <b>
+        {{data.name}}
+            </b>
+        {%endif%}
+    </span>
+    <span class="search_field">
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+            {{ form.search_field.label }}
+            {{ form.search_field }}
+            {% for error in form.search_field.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        {{ form.submit() }}
+    </form>
+    </span>
+    <span class="menu">
+
+    </span>
+    <span class="otch">
+        {%if data.inn%}
+        <a href="{{url_for('otchet',data = data) }}" class="black">Скачать отчет</a>
+        {%endif%}
+    </span>
+</div>
+<div class="main">
+
+    {% block app_content %}{% endblock %}
+</div>
+<div class="sved">Сведения носят справочный характер. КонтрагентПлюс не несет ответственность за достоверность предоставляемой информации</div><br><br>
+<!--<div class="footer">-->
+<!--    <div class="footer_flex">-->
+<!--        <div class="footer_first">-->
+<!--            О компании<br>Источники данных<br><br>Соцаильные сети-->
+<!--        </div>-->
+<!--        <div class="footer_second">-->
+<!--            Наименование организации<br>Реквизиты компании:<br><br>ИНН:<br>ОГРН:-->
+<!--        </div>-->
+<!--        <div class="footer_third">-->
+<!--            <b>Контакты:</b><br>-->
+<!--            <b>Режим работы:</b><br>-->
+<!--            <b>Телефон:</b><br>-->
+<!--            <b>Почта:</b>-->
+<!--        </div>-->
+<!--    </div>-->
+{% endblock %}

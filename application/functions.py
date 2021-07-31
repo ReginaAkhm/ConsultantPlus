@@ -156,7 +156,6 @@ def kadarbitr_1(inn):
     '''Сведения с сайта Кadarbitr'''
     socks.set_default_proxy(socks.SOCKS5, "localhost", 9150)
     socket.socket = socks.socksocket
-    checkIP()
     url = "https://kad.arbitr.ru/Kad/SearchInstances"
     total = None
     ist = None
